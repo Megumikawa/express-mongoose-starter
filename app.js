@@ -6,17 +6,18 @@ var hbs = require('hbs');
 const morgan = require('morgan');
 const PORT = process.env.PORT
 
+
+//set up body-parser
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
 //ensure database is connected
 // We connect to our local database here called `todos`
-mongoose.connect('mongodb://localhost/todos', { useNewUrlParser: true,
-useUnifiedTopology: true,})
-    .then((self) => {
-        console.log('Yayyy Database is connected');
-    })
-    .catch(() => {
-        console.log('Something went wrong with db connection!');
-    })
 
+//runs that file
+require('./config/db.config.js')
 
 // Register your template engine
 // NOTE: 'view engine' is a keyword here. 
@@ -38,15 +39,20 @@ app.use(express.static(__dirname + '/public'))
 //Allows us to see detailed logs in the console
 app.use(morgan('dev'));
 
+
+
 //Register partials if needed
 //hbs.registerPartials(__dirname + '/views/partials');
 
 
 // Routes here
-app.get('/', (req, res) => {
-    res.render('landing.hbs')
-})
+//we use the middleware
+const TodoRoutes = require('./routes/Todo.routes.js')
+app.use('/', TodoRoutes)
 
+app.use((req,res,next)=>{
+    res.status(404).send('AGE NOT FOUND')
+})
 
 //Start the server to begin listening on a port
 app.listen(PORT, () => {

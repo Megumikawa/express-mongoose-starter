@@ -1,0 +1,11 @@
+<form method="POST" action="/todos/{{todo._id}}/edit">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input value="{{todo.name}}"  name="myTodo" type="text" class="form-control" id="exampleInputEmail1">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputDescription1" class="form-label">Description</label>
+    <input value="{{todo.description}}" name="myDescription" type="text" class="form-control" id="exampleInputDescription1">
+  </div>
+  <button type="submit" class="btn btn-primary">Edit</button>
+</form>
